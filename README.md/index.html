@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Diwali Wishes — DSV Group</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --accent:#ff9f0a;
+    --accent-2:#ffd166;
+    --accent-3:#ff4d6d;
+    --accent-4:#6dd5ed;
+    --text:#fffaf0;
+    --muted:#acb1c5;
+  }
+
+  html, body {
+    margin: 0;
+    height: 100%;
+    font-family: "Manrope", sans-serif;
+    background: radial-gradient(circle at top, #1b1b36, #0c0c18 80%);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  #fireworks { position:fixed; inset:0; z-index:0; pointer-events:none; }
+
+  #musicToggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    font-size: 26px;
+    background: none;
+    border: none;
+    color: var(--accent-2);
+    cursor: pointer;
+    z-index: 5;
+    text-shadow: 0 0 10px rgba(255,255,255,.7);
+  }
+
+  .back-arrow {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    font-size: 18px;
+    padding: 8px 14px;
+    background: rgba(32,32,70,0.8);
+    border: 1px solid #343466;
+    border-radius: 8px;
+    color: var(--accent-4);
+    cursor: pointer;
+    z-index: 5;
+    text-shadow: 0 0 10px rgba(255,255,255,.6);
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  .wrap[hidden] { display: none !important; }
+
+  .card {
+    background: rgba(20,20,40,0.92);
+    border: 1px solid #2b2b56;
+    border-radius: 20px;
+    padding: clamp(24px, 5vw, 48px);
+    width: 100%;
+    max-width: 900px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.6);
+    text-align: center;
+  }
+
+  h1,h2,h3{
+    font-family:"Playfair Display", serif;
+    margin-bottom: 16px;
+    background: linear-gradient(90deg, var(--accent-2), var(--accent-3), var(--accent-4));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  p { line-height: 1.6; margin-bottom: 20px; }
+
+  .btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+  }
+
+  .btn {
+    padding: 14px 22px;
+    border-radius: 12px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(135deg,#ffb703,#ff4d6d,#6dd5ed);
+    background-size: 300% 300%;
+    color:#251a00;
+    box-shadow:0 6px 20px rgba(0,0,0,.5);
+    transition: all .25s ease;
+    font-size: 1rem;
+  }
+  .btn:hover{ transform: translateY(-2px); }
+  .btn.ghost{ background:#202046; color:#e8eaf7; border:1px solid #343466; }
+
+  .lang-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .lang-card{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:14px;
+    border-radius:14px;
+    font-size: .95rem;
+    font-weight: 600;
+    background: linear-gradient(180deg,#1c1c3f,#101028);
+    border: 1px solid #2d2d58;
+    cursor:pointer;
+    transition: .2s;
+    text-align:center;
+  }
+  .lang-card:hover{ transform: translateY(-4px) scale(1.04); border-color: var(--accent-4); }
+
+  #step2 .btns { margin-top: 30px; }
+
+  /* FULLSCREEN WISH */
+  #step3 {
+    position: absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    text-align:center;
+    padding: 20px;
+    background: transparent;
+    z-index: 2;
+  }
+
+  .wish-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #msgHeading {
+    font-family:"Playfair Display", serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, var(--accent-2), var(--accent-3), var(--accent-4));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 25px rgba(255,180,100,.5);
+  }
+
+  #messageText {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    line-height: 1.6;
+    max-width: 800px;
+    color:#fffbe9;
+    text-shadow: 0 0 15px rgba(255,255,200,.5);
+  }
+
+  .signature { margin-top: 30px; font-weight: 800; font-size: 1.2rem; color: var(--accent-2); }
+
+  .logos {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+  }
+  .logos img { max-height:50px; max-width:150px; object-fit: contain; filter: brightness(0) invert(1); }
+
+  .footer {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--muted);
+    padding: 20px;
+    line-height: 1.5;
+    margin: 20px;
+  }
+
+  #step3[hidden] { display:none; }
+
+  @media(max-width:600px){
+    .btn { width: 100%; text-align:center; }
+    .lang-card{ font-size: .85rem; padding:12px; }
+    .logos img { max-width:100px; max-height:40px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="fireworks"></canvas>
+<audio id="bgMusic" autoplay loop>
+  <source src="./music.mp3" type="audio/mpeg" />
+</audio>
+<button id="musicToggle">♫</button>
+
+<!-- STEP 1 -->
+<div class="wrap" id="step1">
+  <section class="card">
+    <h1>🪔 A Swadeshi Diwali Greeting</h1>
+    <p>This Diwali we are wishing you in all major languages of Bharat on tech stack completely powered by Bharat. Swadeshi 2.0. Tap “Next” to choose your language.</p>
+    <div class="btns">
+      <button class="btn" id="goLangs">Next →</button>
+    </div>
+  </section>
+</div>
+
+<!-- STEP 2 -->
+<div class="wrap" id="step2" hidden>
+  <section class="card">
+    <h2>Choose Your Language</h2>
+    <p>Select a language to view your Diwali wish.</p>
+    <div id="langGrid" class="lang-grid"></div>
+    <div class="btns">
+      <button class="btn ghost" id="back1">← Back</button>
+    </div>
+  </section>
+</div>
+
+<!-- STEP 3 -->
+<div id="step3" hidden>
+  <button class="back-arrow" id="back2">← Change Language</button>
+  <div class="wish-content">
+    <h2 id="msgHeading">🪔 Diwali Wishes</h2>
+    <p id="messageText">Warm Diwali greetings to you and your loved ones. May this festival of lights illuminate the year ahead with health, harmony, and success.</p>
+    <div class="signature"> — DSV Group | FI DIGITAL | FRISTINE INFOTECH </div>
+
+    <div class="btns" style="margin-top:30px;">
+      <button class="btn" id="goMsg">A Message From DSV Group →</button>
+    </div>
+
+    <!-- Logos -->
+    <div class="logos">
+      <img src="./DSV_Corp_new__2000x500_transparent.png" alt="Company 1">
+      <img src="./FI_DIGITAL_new__2000x500_transparent.png" alt="Company 2">
+      <img src="./FRISTINE_INFOTECH_new__2000x500_transparent.png" alt="Company 3">
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>
+      Powered by Zoho's Swadeshi stack.<br>
+      All data securely stored in Indian Data centres.<br>
+      © 2025 DSV Group. All Rights Reserved.<br>
+      Made with ❤️ in Bharat
+    </p>
+  </footer>
+</div>
+
+<!-- STEP 4 -->
+<div class="wrap" id="step4" hidden>
+  <section class="card">
+    <h2>Our Swadeshi Journey with Zoho</h2>
+    <p>For 10+ years, Fristine Infotech has helped 200+ Indian businesses run securely on Zoho’s India-hosted stack—across Customer Experience, HRMS, custom apps, email, and messaging.</p>
+    <p>In the year ahead, we’ll keep solving real problems with technology and AI—one process at a time.</p>
+    <p>If a business in your network could benefit, we’d be grateful for a referral this festive season.</p>
+    <p>DSV Group (Digital Synergy Ventures) brings deep Indian roots and a global outlook, helping brands succeed locally with solutions tailored to each market’s culture and customers.</p>
+    <p><b>Wishing you a bright and prosperous Diwali.</p>
+    <h3>Pass Our Name Along</h3>
+    <p>Help us solve more real problems with technology and AI.</p>
+    <div class="btns">
+      <button class="btn" id="downloadContact">Download Contact</button>
+      <button class="btn ghost" id="shareContact">Share Contact</button>
+      <button class="btn ghost" id="back3">← Back</button>
+    </div>
+  </section>
+</div>
+
+<script>
+const $ = sel => document.querySelector(sel);
+function show(id){
+  ["#step1","#step2","#step3","#step4"].forEach(s => $(s).hidden = (s !== '#'+id));
+}
+
+/* Languages */
+const LANGS = [
+  {name:"English (All India)", text:"Warm Diwali greetings to you and your loved ones. May this festival of lights illuminate the year ahead with health, harmony, and success."},
+  {name:"हिंदी (Uttar Pradesh)", text:"आपको और आपके प्रियजनों को दीपावली की हार्दिक शुभकामनाएं। यह रोशनी का पर्व आने वाले वर्ष को स्वास्थ्य, सामंजस्य और सफलता से आलोकित करे।"},
+  {name:"मराठी (Maharashtra)", text:"आपण आणि आपल्या प्रियजनांना दीपावलीच्या हार्दिक शुभेच्छा. हा प्रकाशाचा सण येणाऱ्या वर्षाला आरोग्य, सौहार्द आणि यशाने उजळून टाको."},
+  {name:"ગુજરાતી (Gujarat)", text:"તમને અને તમારા પરિવારજનોને દિવાળીની હાર્દિક શુભકામનાઓ. આ પ્રકાશનો તહેવાર આવનાર વર્ષને આરોગ્ય, સૌહાર્દ અને સફળતા સાથે પ્રજ્વલિત કરે."},
+  {name:"தமிழ் (Tamil Nadu)", text:"உங்களுக்கும் உங்கள் அன்புக்குரியவர்களுக்கும் இதயம் கனிந்த தீபாவளி நல்வாழ்த்துக்கள். இந்நிகழ்வு வரும் ஆண்டை ஆரோக்கியம், ஒற்றுமை, வெற்றியுடன் ஒளிரச் செய்க."},
+  {name:"తెలుగు (Andhra Pradesh)", text:"మీకు మరియు మీ స్నేహితులకు దీపావళి శుభాకాంక్షలు. ఈ దీపాల పండుగ రాబోయే సంవత్సరాన్ని ఆరోగ్యం, సామరస్యం మరియు విజయంతో ప్రకాశింపజేయాలి."},
+  {name:"ಕನ್ನಡ (Karnataka)", text:"ನೀವು ಮತ್ತು ನಿಮ್ಮ ಪ್ರೀತಿಪಾತ್ರರಿಗೆ ದೀಪಾವಳಿ ಹಾರ್ದಿಕ ಶುಭಾಶಯಗಳು. ಈ ಬೆಳಕಿನ ಹಬ್ಬವು ಬರಲಿರುವ ವರ್ಷವನ್ನು ಆರೋಗ್ಯ, ಸೌಹಾರ್ದ ಮತ್ತು ಯಶಸ್ಸಿನಿಂದ ಪ್ರಕಾಶಮಾನವಾಗಿಸಲಿ."},
+  {name:"বাংলা (West Bengal)", text:"আপনাকে এবং আপনার প্রিয়জনদের আন্তরিক দীপাবলির শুভেচ্ছা। এই আলোর উৎসব আগামী বছরকে স্বাস্থ্য, সম্প্রীতি এবং সাফল্যে আলোকিত করুক।"},
+  {name:"ਪੰਜਾਬੀ (Punjab)", text:"ਤੁਹਾਨੂੰ ਅਤੇ ਤੁਹਾਡੇ ਪਿਆਰੇਆਂ ਨੂੰ ਦੀਵਾਲੀ ਦੀਆਂ ਲੱਖ-ਲੱਖ ਵਧਾਈਆਂ। ਰੋਸ਼ਨੀ ਦਾ ਇਹ ਤਿਉਹਾਰ ਆਉਣ ਵਾਲੇ ਸਾਲ ਨੂੰ ਸਿਹਤ, ਸਾਂਝ ਅਤੇ ਕਾਮਯਾਬੀ ਨਾਲ ਰੌਸ਼ਨ ਕਰੇ।"},
+  {name:"Malayalam (Kerala)", text:"നിങ്ങൾക്കും നിങ്ങളുടെ പ്രിയപ്പെട്ടവർക്കും ഹൃദയം നിറഞ്ഞ ദീപാവലി ആശംസകൾ. ഈ പ്രകാശോത്സവം വരാനിരിക്കുന്ന വർഷത്തെ ആരോഗ്യം, സൗഹൃദം, വിജയങ്ങൾ കൊണ്ട് പ്രകാശിപ്പിക്കട്ടെ."},
+  {name:"Odia (Odisha)", text:"ଆପଣଙ୍କୁ ଏବଂ ଆପଣଙ୍କ ପ୍ରିୟଜନଙ୍କୁ ଦୀପାବଳିର ହାର୍ଦ୍ଦିକ ଶୁଭେଚ୍ଛା। ଏହି ଆଲୋକର ପର୍ବ ଆସନ୍ତା ବର୍ଷକୁ ସ୍ୱାସ୍ଥ୍ୟ, ସମ୍ମିଳନ ଓ ସଫଳତାରେ ଆଲୋକିତ କରୁ।"},
+  {name:"Kashmiri (J&K)", text:"آپ کو اور آپ کے پیاروں کو دیوالی کی دلی مبارکباد۔ یہ روشنیوں کا تہوار آنے والے سال کو صحت، ہم آہنگی اور کامیابی سے منور کرے۔"}
+];
+const grid = $("#langGrid");
+LANGS.forEach(L=>{
+  const btn=document.createElement('div');
+  btn.className="lang-card";
+  btn.textContent = L.name;
+  btn.addEventListener("click",()=>{
+    $("#msgHeading").textContent="🪔 Diwali Wishes";
+    $("#messageText").textContent=L.text;
+    show("step3");
+  });
+  grid.appendChild(btn);
+});
+
+/* Navigation */
+$("#goLangs").addEventListener("click",()=>show("step2"));
+$("#back1").addEventListener("click",()=>show("step1"));
+$("#back2").addEventListener("click",()=>show("step2"));
+$("#back3").addEventListener("click",()=>show("step3"));
+$("#goMsg").addEventListener("click",()=>show("step4"));
+
+/* Contact Info */
+const contactInfo = {
+  company: "DSV Group Technology & AI Solutions - Fristine Infotech ",
+  phone: "+91 98765 43210",
+  email: "support@dsvcorp.com.au",
+  website: "https://dsvcorp.com.au/"
+};
+$("#downloadContact").addEventListener("click", () => {
+  const vcf = `BEGIN:VCARD
+VERSION:3.0
+ORG:${contactInfo.company}
+TEL:${contactInfo.phone}
+EMAIL:${contactInfo.email}
+URL:${contactInfo.website}
+END:VCARD`;
+  const blob = new Blob([vcf], {type: "text/vcard"});
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "DSVGroup.vcf";
+  link.click();
+});
+$("#shareContact").addEventListener("click", async () => {
+  const shareData = {
+    title: "DSV Group Contact",
+    text: `${contactInfo.company}\nPhone: ${contactInfo.phone}\nEmail: ${contactInfo.email}\nWebsite: ${contactInfo.website}`,
+    url: contactInfo.website
+  };
+  if (navigator.share) {
+    try { await navigator.share(shareData); } 
+    catch { alert("Share cancelled."); }
+  } else {
+    navigator.clipboard.writeText(shareData.text + "\n" + shareData.url);
+    alert("Contact info copied!");
+  }
+});
+
+/* Music Autoplay */
+window.addEventListener("load", () => {
+  const bgMusic = document.getElementById("bgMusic"); 
+  bgMusic.volume = 0.6;
+
+  // Try autoplay on load
+  bgMusic.play().then(() => {
+    console.log("Music autoplay started.");
+    document.getElementById("musicToggle").style.color = "#6dd5ed"; // active color
+  }).catch(err => {
+    console.log("Autoplay blocked by browser:", err);
+    document.getElementById("musicToggle").style.color = "#ffd166"; // muted color
+  });
+
+  // Add toggle functionality
+  let playing = true;
+  document.getElementById("musicToggle").addEventListener("click", () => {
+    if (playing) {
+      bgMusic.pause();
+      playing = false;
+      document.getElementById("musicToggle").style.color = "#ffd166";
+    } else {
+      bgMusic.play();
+      playing = true;
+      document.getElementById("musicToggle").style.color = "#6dd5ed";
+    }
+  });
+});
+
+
+/* Fireworks */
+const cvs=document.getElementById('fireworks'); const ctx=cvs.getContext('2d',{alpha:true});
+let W=0,H=0,sparks=[];
+function resize(){W=cvs.width=innerWidth*devicePixelRatio; H=cvs.height=innerHeight*devicePixelRatio;}
+addEventListener('resize',resize); resize();
+function burst(x,y){for(let i=0;i<50;i++){sparks.push({x,y,vx:(Math.random()-0.5)*6,vy:(Math.random()-0.5)*6,life:100,age:0});}}
+function loop(){
+  ctx.clearRect(0,0,W,H);
+  if(Math.random()<0.04) burst(Math.random()*W,Math.random()*H*0.7);
+  for(let i=sparks.length-1;i>=0;i--){
+    let s=sparks[i]; s.age++; s.x+=s.vx; s.y+=s.vy; s.vy+=0.05;
+    let t=s.age/s.life; if(t>=1){sparks.splice(i,1);continue;}
+    ctx.fillStyle=`rgba(255,${150+Math.random()*100},${50+Math.random()*150},${1-t})`;
+    ctx.beginPath(); ctx.arc(s.x,s.y,3,0,Math.PI*2); ctx.fill();
+  }
+  requestAnimationFrame(loop);
+}
+loop();
+
+/* Default */
+show("step1");
+</script>
+</body>
+</html>
