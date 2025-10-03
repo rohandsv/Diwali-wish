@@ -162,13 +162,33 @@
   }
 
   #msgHeading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
     font-family:"Playfair Display", serif;
-    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-size: clamp(2.8rem, 6.5vw, 5.5rem);
     margin-bottom: 20px;
     background: linear-gradient(90deg, var(--accent-2), var(--accent-3), var(--accent-4));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 0 0 25px rgba(255,180,100,.5);
+  }
+
+  #msgHeading img {
+    height: 90px; /* bigger size */
+    width: auto;
+  }
+
+  #step1 h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  #step1 h1 img {
+    height: 60px;
+    width: auto;
   }
 
   #messageText {
@@ -206,6 +226,8 @@
     .btn { width: 100%; text-align:center; }
     .lang-card{ font-size: .85rem; padding:12px; }
     .logos img { max-width:100px; max-height:40px; }
+    #msgHeading img { height: 60px; }
+    #step1 h1 img { height: 40px; }
   }
 </style>
 </head>
@@ -220,7 +242,7 @@
 <!-- STEP 1 -->
 <div class="wrap" id="step1">
   <section class="card">
-    <h1>🪔 A Swadeshi Diwali Greeting</h1>
+    <h1><img src="./deepak2.png" alt="Deepak"> A Swadeshi Diwali Greeting</h1>
     <p>This Diwali we are wishing you in all major languages of Bharat on tech stack completely powered by Bharat. Swadeshi 2.0. Tap “Next” to choose your language.</p>
     <div class="btns">
       <button class="btn" id="goLangs">Next →</button>
@@ -244,7 +266,10 @@
 <div id="step3" hidden>
   <button class="back-arrow" id="back2">← Change Language</button>
   <div class="wish-content">
-    <h2 id="msgHeading">🪔 Diwali Wishes</h2>
+    <h2 id="msgHeading">
+      <img src="./deepak2.png" alt="Deepak"> 
+      Diwali Wishes
+    </h2>
     <p id="messageText">Warm Diwali greetings to you and your loved ones. May this festival of lights illuminate the year ahead with health, harmony, and success.</p>
     <div class="signature"> — DSV Group | FI DIGITAL | FRISTINE INFOTECH </div>
 
@@ -271,7 +296,7 @@
   </footer>
 </div>
 
-<!-- STEP 4 -->
+<!-- STEP 4 (unchanged content) -->
 <div class="wrap" id="step4" hidden>
   <section class="card">
     <h2>Our Swadeshi Journey with Zoho</h2>
@@ -279,7 +304,7 @@
     <p>In the year ahead, we’ll keep solving real problems with technology and AI—one process at a time.</p>
     <p>If a business in your network could benefit, we’d be grateful for a referral this festive season.</p>
     <p>DSV Group (Digital Synergy Ventures) brings deep Indian roots and a global outlook, helping brands succeed locally with solutions tailored to each market’s culture and customers.</p>
-    <p><b>Wishing you a bright and prosperous Diwali.</p>
+    <p><b>Wishing you a bright and prosperous Diwali.</b></p>
     <h3>Pass Our Name Along</h3>
     <p>Help us solve more real problems with technology and AI.</p>
     <div class="btns">
@@ -317,7 +342,7 @@ LANGS.forEach(L=>{
   btn.className="lang-card";
   btn.textContent = L.name;
   btn.addEventListener("click",()=>{
-    $("#msgHeading").textContent="🪔 Diwali Wishes";
+    $("#msgHeading").innerHTML = `<img src="./deepak2.png" alt="Deepak"> Diwali Wishes`;
     $("#messageText").textContent=L.text;
     show("step3");
   });
@@ -371,31 +396,14 @@ $("#shareContact").addEventListener("click", async () => {
 window.addEventListener("load", () => {
   const bgMusic = document.getElementById("bgMusic"); 
   bgMusic.volume = 0.6;
+  bgMusic.play().catch(err => console.log("Autoplay blocked:", err));
 
-  // Try autoplay on load
-  bgMusic.play().then(() => {
-    console.log("Music autoplay started.");
-    document.getElementById("musicToggle").style.color = "#6dd5ed"; // active color
-  }).catch(err => {
-    console.log("Autoplay blocked by browser:", err);
-    document.getElementById("musicToggle").style.color = "#ffd166"; // muted color
-  });
-
-  // Add toggle functionality
   let playing = true;
   document.getElementById("musicToggle").addEventListener("click", () => {
-    if (playing) {
-      bgMusic.pause();
-      playing = false;
-      document.getElementById("musicToggle").style.color = "#ffd166";
-    } else {
-      bgMusic.play();
-      playing = true;
-      document.getElementById("musicToggle").style.color = "#6dd5ed";
-    }
+    if (playing) { bgMusic.pause(); playing = false; document.getElementById("musicToggle").style.color = "#ffd166"; }
+    else { bgMusic.play(); playing = true; document.getElementById("musicToggle").style.color = "#6dd5ed"; }
   });
 });
-
 
 /* Fireworks */
 const cvs=document.getElementById('fireworks'); const ctx=cvs.getContext('2d',{alpha:true});
